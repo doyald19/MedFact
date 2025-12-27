@@ -37,6 +37,16 @@ const AuthModal: React.FC<AuthModalProps> = ({
   });
   const [errors, setErrors] = useState<FormErrors>({});
 
+  // Sync mode with initialMode prop when modal opens
+  React.useEffect(() => {
+    if (isOpen) {
+      setMode(initialMode);
+      setFormData({ email: '', password: '', name: '' });
+      setErrors({});
+      setShowPassword(false);
+    }
+  }, [isOpen, initialMode]);
+
   // Don't render if not open
   if (!isOpen) return null;
 

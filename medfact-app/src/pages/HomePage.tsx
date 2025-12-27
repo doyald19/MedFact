@@ -167,6 +167,13 @@ const HomePage: React.FC = () => {
             onAuthPrompt={handleAuthPrompt}
           />
         </motion.div>
+
+        {/* Auth Modal for Symptom Checker view */}
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          initialMode={authMode}
+        />
       </div>
     );
   }
