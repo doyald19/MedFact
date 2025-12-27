@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/MedFact/static/css/main.97f44b7d.css",
+    "main.js": "/MedFact/static/js/main.fe3d9bf0.js",
+    "static/js/453.c75ad127.chunk.js": "/MedFact/static/js/453.c75ad127.chunk.js",
+    "index.html": "/MedFact/index.html",
+    "main.97f44b7d.css.map": "/MedFact/static/css/main.97f44b7d.css.map",
+    "main.fe3d9bf0.js.map": "/MedFact/static/js/main.fe3d9bf0.js.map",
+    "453.c75ad127.chunk.js.map": "/MedFact/static/js/453.c75ad127.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.97f44b7d.css",
+    "static/js/main.fe3d9bf0.js"
+  ]
+}
