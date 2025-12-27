@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Question, QuestionResponse, AnalysisResults, Condition } from '../types';
 import { 
-  VERIFIED_DATASET, 
   getInitialQuestionForSymptom, 
   getQuestionById, 
   getConditionById,
-  getRelatedConditionsForSymptom 
+  getRelatedConditionsForSymptom,
+  getInitialQuestionFromInput
 } from '../data/verifiedDataset';
 import GlassCard from './ui/GlassCard';
 import SymptomResults from './SymptomResults';
@@ -25,13 +25,33 @@ const SymptomChecker: React.FC<SymptomCheckerProps> = ({
   const [responses, setResponses] = useState<QuestionResponse[]>([]);
   const [isComplete, setIsComplete] = useState(false);
   const [results, setResults] = useState<AnalysisResults | null>(null);
+  const [detectedSymptom, setDetectedSymptom] = useState<string>(initialSymptom);
+  const [relatedConditionIds, setRelatedConditionIds] = useState<string[]>([]);
 
   // Initialize the symptom checker with the first question
   useEffect(() => {
-    const initialQuestionId = getInitialQuestionForSymptom(initialSymptom);
+    // First try direct symptom lookup
+    let initialQuestionId = getInitialQuestionForSymptom(initialSymptom);
+    let symptom = initialSymptom;
+    let conditions: string[] = [];
+    
+    if (!initialQuestionId) {
+      // Try natural language extraction
+      const extracted = getInitialQuestionFromInput(initialSymptom);
+      if (extracted.questionId) {
+        initialQuestionId = extracted.questionId;
+        symptom = extracted.symptom || initialSymptom;
+        conditions = extracted.conditions;
+      }
+    } else {
+      conditions = getRelatedConditionsForSymptom(initialSymptom);
+    }
+    
     if (initialQuestionId) {
       const question = getQuestionById(initialQuestionId);
       setCurrentQuestion(question);
+      setDetectedSymptom(symptom);
+      setRelatedConditionIds(conditions);
     }
   }, [initialSymptom]);
 
@@ -62,8 +82,12 @@ const SymptomChecker: React.FC<SymptomCheckerProps> = ({
 
   // Generate analysis results based on responses
   const completeAnalysis = (allResponses: QuestionResponse[]) => {
-    const relatedConditionIds = getRelatedConditionsForSymptom(initialSymptom);
-    const possibleConditions: Condition[] = relatedConditionIds
+    // Use the detected conditions or fall back to symptom lookup
+    const conditionIds = relatedConditionIds.length > 0 
+      ? relatedConditionIds 
+      : getRelatedConditionsForSymptom(detectedSymptom);
+    
+    const possibleConditions: Condition[] = conditionIds
       .map(id => getConditionById(id))
       .filter((condition): condition is Condition => condition !== null);
 
@@ -156,7 +180,7 @@ const SymptomChecker: React.FC<SymptomCheckerProps> = ({
     return (
       <SymptomResults 
         results={results} 
-        initialSymptom={initialSymptom}
+        initialSymptom={detectedSymptom}
         onAuthPrompt={onAuthPrompt}
       />
     );
@@ -166,8 +190,8 @@ const SymptomChecker: React.FC<SymptomCheckerProps> = ({
     return (
       <GlassCard className="p-4 sm:p-6 max-w-2xl mx-auto" aria-label="Symptom not found">
         <div className="text-center">
-          <p className="text-base sm:text-lg">Unable to find questions for the symptom: "{initialSymptom}"</p>
-          <p className="text-sm mt-2 opacity-75">Please try a different symptom or contact support.</p>
+          <p className="text-base sm:text-lg">Unable to find questions for: "{initialSymptom}"</p>
+          <p className="text-sm mt-2 opacity-75">Try using simpler terms like: headache, fever, nausea, cough, sore throat, etc.</p>
         </div>
       </GlassCard>
     );
@@ -179,7 +203,7 @@ const SymptomChecker: React.FC<SymptomCheckerProps> = ({
         {/* Progress indicator */}
         <div className="flex items-center justify-between text-xs sm:text-sm opacity-75" aria-live="polite">
           <span>Question {responses.length + 1}</span>
-          <span>Symptom: {initialSymptom}</span>
+          <span>Symptom: {detectedSymptom}</span>
         </div>
 
         {/* Current question */}

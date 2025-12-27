@@ -250,24 +250,52 @@ const QUESTIONS_MAP = new Map<string, Question>([
   }]
 ]);
 
-// Symptom keyword mappings
+// Symptom keyword mappings (including common typos and variations)
 const SYMPTOM_KEYWORDS = new Map<string, string[]>([
   ['headache', ['migraine', 'tension_headache', 'cluster_headache']],
   ['head pain', ['migraine', 'tension_headache', 'cluster_headache']],
+  ['head ache', ['migraine', 'tension_headache', 'cluster_headache']],
   ['migraine', ['migraine']],
   ['fever', ['flu', 'common_cold', 'bacterial_infection']],
+  ['fiver', ['flu', 'common_cold', 'bacterial_infection']], // common typo
+  ['fevar', ['flu', 'common_cold', 'bacterial_infection']], // common typo
+  ['fevr', ['flu', 'common_cold', 'bacterial_infection']], // common typo
   ['temperature', ['flu', 'common_cold', 'bacterial_infection']],
+  ['temp', ['flu', 'common_cold', 'bacterial_infection']],
   ['hot', ['flu', 'bacterial_infection']],
+  ['burning', ['flu', 'bacterial_infection']],
   ['nausea', ['gastroenteritis', 'food_poisoning', 'migraine']],
+  ['nauseous', ['gastroenteritis', 'food_poisoning', 'migraine']],
+  ['nauseated', ['gastroenteritis', 'food_poisoning', 'migraine']],
   ['vomiting', ['gastroenteritis', 'food_poisoning']],
+  ['vomit', ['gastroenteritis', 'food_poisoning']],
+  ['throwing up', ['gastroenteritis', 'food_poisoning']],
   ['stomach pain', ['gastroenteritis', 'food_poisoning']],
+  ['stomach ache', ['gastroenteritis', 'food_poisoning']],
+  ['tummy', ['gastroenteritis', 'food_poisoning']],
+  ['belly', ['gastroenteritis', 'food_poisoning']],
   ['diarrhea', ['gastroenteritis', 'food_poisoning']],
+  ['diarrhoea', ['gastroenteritis', 'food_poisoning']],
+  ['loose motion', ['gastroenteritis', 'food_poisoning']],
   ['cough', ['flu', 'common_cold']],
+  ['coughing', ['flu', 'common_cold']],
   ['sore throat', ['flu', 'common_cold']],
+  ['throat pain', ['flu', 'common_cold']],
   ['runny nose', ['common_cold', 'flu']],
+  ['running nose', ['common_cold', 'flu']],
+  ['stuffy nose', ['common_cold', 'flu']],
+  ['blocked nose', ['common_cold', 'flu']],
+  ['cold', ['common_cold', 'flu']],
+  ['flu', ['flu']],
   ['body aches', ['flu']],
+  ['body pain', ['flu']],
+  ['muscle pain', ['flu']],
   ['fatigue', ['flu', 'bacterial_infection']],
-  ['chills', ['flu', 'bacterial_infection']]
+  ['tired', ['flu', 'bacterial_infection']],
+  ['weakness', ['flu', 'bacterial_infection']],
+  ['weak', ['flu', 'bacterial_infection']],
+  ['chills', ['flu', 'bacterial_infection']],
+  ['shivering', ['flu', 'bacterial_infection']]
 ]);
 
 // Question flow structure
@@ -289,6 +317,10 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'headache_type',
       relatedConditions: ['migraine', 'tension_headache', 'cluster_headache']
     },
+    'head ache': {
+      initialQuestionId: 'headache_type',
+      relatedConditions: ['migraine', 'tension_headache', 'cluster_headache']
+    },
     'migraine': {
       initialQuestionId: 'headache_type',
       relatedConditions: ['migraine']
@@ -297,7 +329,19 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'common_cold', 'bacterial_infection']
     },
+    'fiver': {  // common typo
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'common_cold', 'bacterial_infection']
+    },
+    'fevar': {  // common typo
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'common_cold', 'bacterial_infection']
+    },
     'temperature': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'common_cold', 'bacterial_infection']
+    },
+    'temp': {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'common_cold', 'bacterial_infection']
     },
@@ -305,7 +349,19 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'bacterial_infection']
     },
+    'cold': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['common_cold', 'flu']
+    },
+    'flu': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu']
+    },
     'nausea': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning', 'migraine']
+    },
+    'nauseous': {
       initialQuestionId: 'nausea_severity',
       relatedConditions: ['gastroenteritis', 'food_poisoning', 'migraine']
     },
@@ -313,7 +369,23 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'nausea_severity',
       relatedConditions: ['gastroenteritis', 'food_poisoning']
     },
+    'vomit': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning']
+    },
+    'throwing up': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning']
+    },
     'stomach pain': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning']
+    },
+    'stomach ache': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning']
+    },
+    'tummy ache': {
       initialQuestionId: 'nausea_severity',
       relatedConditions: ['gastroenteritis', 'food_poisoning']
     },
@@ -321,7 +393,19 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'nausea_severity',
       relatedConditions: ['gastroenteritis', 'food_poisoning']
     },
+    'diarrhoea': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning']
+    },
+    'loose motion': {
+      initialQuestionId: 'nausea_severity',
+      relatedConditions: ['gastroenteritis', 'food_poisoning']
+    },
     'cough': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'common_cold']
+    },
+    'coughing': {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'common_cold']
     },
@@ -329,7 +413,19 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'common_cold']
     },
+    'throat pain': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'common_cold']
+    },
     'runny nose': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['common_cold', 'flu']
+    },
+    'running nose': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['common_cold', 'flu']
+    },
+    'stuffy nose': {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['common_cold', 'flu']
     },
@@ -337,11 +433,27 @@ export const VERIFIED_DATASET: VerifiedDataset = {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu']
     },
+    'body pain': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu']
+    },
     'fatigue': {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'bacterial_infection']
     },
+    'tired': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'bacterial_infection']
+    },
+    'weakness': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'bacterial_infection']
+    },
     'chills': {
+      initialQuestionId: 'fever_severity',
+      relatedConditions: ['flu', 'bacterial_infection']
+    },
+    'shivering': {
       initialQuestionId: 'fever_severity',
       relatedConditions: ['flu', 'bacterial_infection']
     }
@@ -381,4 +493,59 @@ export const searchSymptomKeywords = (input: string): string[] => {
   }
   
   return Array.from(matchedConditions);
+};
+
+// Enhanced function to extract symptom from natural language input
+export const extractSymptomFromInput = (input: string): string | null => {
+  const normalizedInput = input.toLowerCase().trim();
+  
+  // First, try direct mapping
+  for (const symptom of Object.keys(VERIFIED_DATASET.symptomMappings)) {
+    if (normalizedInput.includes(symptom)) {
+      return symptom;
+    }
+  }
+  
+  // Try keyword matching
+  for (const keyword of SYMPTOM_KEYWORDS.keys()) {
+    if (normalizedInput.includes(keyword)) {
+      return keyword;
+    }
+  }
+  
+  return null;
+};
+
+// Get initial question from natural language input
+export const getInitialQuestionFromInput = (input: string): { questionId: string | null; symptom: string | null; conditions: string[] } => {
+  const normalizedInput = input.toLowerCase().trim();
+  
+  // Try to find a matching symptom in the input
+  for (const [symptom, mapping] of Object.entries(VERIFIED_DATASET.symptomMappings)) {
+    if (normalizedInput.includes(symptom)) {
+      return {
+        questionId: mapping.initialQuestionId,
+        symptom: symptom,
+        conditions: mapping.relatedConditions
+      };
+    }
+  }
+  
+  // Try keyword matching as fallback
+  for (const [keyword, conditionIds] of SYMPTOM_KEYWORDS.entries()) {
+    if (normalizedInput.includes(keyword)) {
+      // Find the first symptom that maps to these conditions
+      for (const [symptom, mapping] of Object.entries(VERIFIED_DATASET.symptomMappings)) {
+        if (mapping.relatedConditions.some(c => conditionIds.includes(c))) {
+          return {
+            questionId: mapping.initialQuestionId,
+            symptom: keyword,
+            conditions: conditionIds
+          };
+        }
+      }
+    }
+  }
+  
+  return { questionId: null, symptom: null, conditions: [] };
 };
