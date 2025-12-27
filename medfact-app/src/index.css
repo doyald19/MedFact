@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Mobile-first responsive base styles */
+  html {
+    font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Ensure touch targets are accessible */
+  button, 
+  a, 
+  input[type="button"], 
+  input[type="submit"],
+  [role="button"] {
+    touch-action: manipulation;
+  }
+  
+  /* Improve focus visibility for accessibility */
+  :focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.7);
+    outline-offset: 2px;
+  }
+  
+  /* Remove default focus outline when using mouse */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-glass-light backdrop-blur-md border border-glass-border rounded-2xl shadow-glass;
+  }
+  
+  .glass-card-dark {
+    @apply bg-glass-dark backdrop-blur-md border border-glass-border-dark rounded-2xl shadow-glass;
+  }
+  
+  .glass-card-elevated {
+    @apply bg-glass-light backdrop-blur-lg border border-glass-border rounded-2xl shadow-glass-lg;
+  }
+  
+  .glass-card-subtle {
+    @apply bg-glass-light backdrop-blur-sm border border-glass-border rounded-xl shadow-glass;
+  }
+  
+  /* Responsive button with touch target */
+  .btn-touch {
+    @apply min-h-[44px] min-w-[44px] px-4 py-2 inline-flex items-center justify-center;
+  }
+  
+  /* Responsive input with touch target */
+  .input-touch {
+    @apply min-h-[44px] px-4 py-3;
+  }
+  
+  /* Skip to main content link for accessibility */
+  .skip-link {
+    @apply absolute -top-10 left-0 bg-blue-600 text-white px-4 py-2 z-50 focus:top-0 transition-all;
+  }
+}
+
+@layer utilities {
+  /* High contrast text utilities for glass elements */
+  .text-glass-contrast {
+    @apply text-gray-900 dark:text-white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-glass-contrast-muted {
+    @apply text-gray-800 dark:text-gray-100;
+  }
+  
+  /* Safe area padding for mobile devices with notches */
+  .safe-area-inset {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Responsive container with mobile padding */
+  .container-responsive {
+    @apply px-4 sm:px-6 md:px-8 lg:px-12 mx-auto max-w-7xl;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
